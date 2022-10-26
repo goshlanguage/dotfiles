@@ -1,0 +1,17 @@
+[user]
+        email = ryan@ryanhartje.com
+        name = Ryan Hartje
+[url "git@github.com:"]
+        insteadOf = https://github.com/
+[init]
+        defaultBranch = main
+[pull]
+        rebase = false
+[commit]
+        gpgsign = true
+[tag]
+        gpgsign = true
+[gpg "x509"]
+        program = gitsign
+[gpg]
+        format = x509
