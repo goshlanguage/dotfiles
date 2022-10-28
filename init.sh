@@ -35,6 +35,7 @@ BREW_APPS=$(cat <<EOF
   qemu
   ripgrep
   rustup-init
+  slack
   stern
   syft
   tldr
