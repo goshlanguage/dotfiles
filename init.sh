@@ -7,6 +7,7 @@ BREW_APPS=$(cat <<EOF
   colima
   crane
   docker
+  freeida
   fzf
   gh
   gitsign
@@ -115,6 +116,7 @@ git config --global commit.gpgsign true  # Sign all commits
 git config --global tag.gpgsign true  # Sign all tags
 git config --global gpg.x509.program gitsign  # Use gitsign for signing
 git config --global gpg.format x509  # gitsign expects x509 args
+git config pull.rebase true
 
 # Setup Zsh plugins
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
