@@ -132,6 +132,11 @@ go install github.com/sigstore/cosign/cmd/cosign
 go install github.com/golangci/golangci-lint/cmd/golangci-lint
 
 
+# kubernerdies
+## install tilt
+curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
+
+
 # Setup kube-ps1
 echo "PROMPT=\`kube_ps1\`\$PROMPT" >> $HOME/.zshrc
 echo >> $HOME/.zshrc
