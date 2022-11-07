@@ -4,6 +4,7 @@ BREW_APPS=$(cat <<EOF
   argocd
   autoconf
   automake
+  clusterctl
   colima
   crane
   docker
