@@ -8,7 +8,6 @@ BREW_APPS=$(cat <<EOF
   colima
   crane
   docker
-  font-source-code-pro-for-powerline
   freeida
   fzf
   gh
@@ -52,6 +51,7 @@ EOF
 
 BREW_CASKS=$(cat <<EOF
   hermes
+  homebrew/cask-fonts/font-source-code-pro-for-powerline
 EOF
 )
 
