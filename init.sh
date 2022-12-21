@@ -8,6 +8,7 @@ BREW_APPS=$(cat <<EOF
   colima
   crane
   docker
+  font-source-code-pro-for-powerline
   freeida
   fzf
   gh
@@ -41,11 +42,11 @@ BREW_APPS=$(cat <<EOF
   stern
   syft
   tldr
-  tree 
+  tree
   watch
   wget
   yq
-  zsh-syntax-highlighting 
+  zsh-syntax-highlighting
 EOF
 )
 
@@ -80,7 +81,7 @@ for i in $(ls -a $DOTFILES_DIR | egrep -v "$EXCLUDE" | egrep -v "^\.+$") ; do
 done
 
 # Create new SSH key if not exists
-if [ ! -f ~/.ssh/ed25519 ]; then 
+if [ ! -f ~/.ssh/ed25519 ]; then
   ssh-keygen -t ed25519
 fi
 
