@@ -8,7 +8,6 @@ BREW_APPS=$(cat <<EOF
   colima
   crane
   docker
-  freeida
   fzf
   gh
   gitsign
@@ -81,18 +80,20 @@ for i in $(ls -a $DOTFILES_DIR | egrep -v "$EXCLUDE" | egrep -v "^\.+$") ; do
 done
 
 # Create new SSH key if not exists
-if [ ! -f ~/.ssh/ed25519 ]; then
+if [ ! -f ~/.ssh/id_ed25519 ]; then
   ssh-keygen -t ed25519
 fi
 
 # Install XCode CLI Tools
-sudo xcode-select --install
+which xcode-select && sudo xcode-select --install
 
 # Install Oh My Zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+if [ ! -d ~/.oh-my-zsh ]; then
+  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
 
 # Install Homebrew and some packages
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+which brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 if [ ! -f ~/.brewhub ] ; then
     echo "\n\n"
@@ -111,22 +112,27 @@ brew tap sigstore/tap
 brew install $BREW_APPS
 brew install $BREW_CASKS --cask
 
+
 # Setup git global config including to gitsign all the things
-git config --global user.name "Ryan Hartje"
-git config --global user.email ryan@ryanhartje.com
-git config --global commit.gpgsign true  # Sign all commits
-git config --global tag.gpgsign true  # Sign all tags
-git config --global gpg.x509.program gitsign  # Use gitsign for signing
-git config --global gpg.format x509  # gitsign expects x509 args
-git config pull.rebase true
+if ! grep -q email $HOME/.gitconfig ; then
+  git config --global user.name "Ryan Hartje"
+  git config --global user.email ryan@ryanhartje.com
+  git config --global commit.gpgsign true  # Sign all commits
+  git config --global tag.gpgsign true  # Sign all tags
+  git config --global gpg.x509.program gitsign  # Use gitsign for signing
+  git config --global gpg.format x509  # gitsign expects x509 args
+  git config pull.rebase true
+fi
 
 # Setup Zsh plugins
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/unixorn/fzf-zsh-plugin.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-zsh-plugin
 
-gsed -i 's|plugins=(|plugins=(zsh-autosuggestions |g' $HOME/.zshrc
-gsed -i 's|plugins=(|plugins=(fzf-zsh-plugin |g' $HOME/.zshrc
-gsed -i 's|plugins=(|plugins=(kube-ps1 |g' $HOME/.zshrc
+which gsed && alias sed=gsed
+
+sed -i 's|plugins=(|plugins=(zsh-autosuggestions |g' $HOME/.zshrc
+sed -i 's|plugins=(|plugins=(fzf-zsh-plugin |g' $HOME/.zshrc
+sed -i 's|plugins=(|plugins=(kube-ps1 |g' $HOME/.zshrc
 
 # Install go apps
 go install github.com/justjanne/powerline-go
@@ -136,7 +142,7 @@ go install github.com/golangci/golangci-lint/cmd/golangci-lint
 
 # kubernerdies
 ## install tilt
-curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
+which tilt || curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
 
 
 # Setup kube-ps1
