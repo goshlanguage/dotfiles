@@ -65,7 +65,7 @@ fi
 # Link all the dotfiles to homedir
 #
 DOTFILES_DIR="$HOME/src/dotfiles";
-EXCLUDE='(setterupper|README|lock|#|\.Trash|^\.git)'
+EXCLUDE='(setterupper|README|lock|#|\.Trash|^\.git|^\.sh)'
 
 cd $HOME
 for i in $(ls -a $DOTFILES_DIR | egrep -v "$EXCLUDE" | egrep -v "^\.+$") ; do
@@ -103,6 +103,12 @@ if [ ! -f ~/.brewhub ] ; then
     read github_key
     echo "export HOMEBREW_GITHUB_API_TOKEN='$github_key'" > ~/.brewhub
     source ~/.brewhub
+fi
+
+if uname -a | grep -q Linux; then
+	if ! grep -q linuxbrew $HOME/.zshrc; then 
+            echo "export PATH=$HOME/bin:/usr/local/bin:$PATH:/home/linuxbrew/.linuxbrew/bin" >> $HOME/.zshrc
+        fi
 fi
 
 brew tap anchore/syft
@@ -144,7 +150,8 @@ go install github.com/golangci/golangci-lint/cmd/golangci-lint
 ## install tilt
 which tilt || curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
 
-
 # Setup kube-ps1
-echo "PROMPT=\`kube_ps1\`\$PROMPT" >> $HOME/.zshrc
-echo >> $HOME/.zshrc
+if ! grep -q kube_ps1 $HOME/.zshrc; then
+  echo "PROMPT=\`kube_ps1\`\$PROMPT" >> $HOME/.zshrc
+  echo >> $HOME/.zshrc
+fi
